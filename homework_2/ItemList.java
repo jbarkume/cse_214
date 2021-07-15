@@ -9,7 +9,7 @@ public class ItemList {
     private ItemInfoNode tail;
 
     /**
-     * Initializes a Doubly-Linked List with <code>head</code>> and <code>tail</code>> values of null
+     * Initializes a Doubly-Linked List with <code>head</code> and <code>tail</code> values of null
      */
     public ItemList() {
         head = null;
