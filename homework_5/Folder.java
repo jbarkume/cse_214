@@ -17,6 +17,12 @@ public class Folder implements Serializable {
     private String currentSortingMethod = "dateD";
     private String[] sortingMethods = {"dateA", "dateD", "subjectA", "subjectD"};
 
+    /**
+    * Constructs a default <code>Folder</code> object with a given name.
+    * Initializes the emails <code>ArrayList</code> to a new list.
+    * @param name
+    *  The name of the folder.
+    */
     public Folder(String name) {
         this.name = name;
         emails = new ArrayList<Email>();
