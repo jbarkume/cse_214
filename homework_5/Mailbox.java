@@ -2,6 +2,14 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+* The <code>Mailbox</code> class represents a mailbox program that can add and remove folders, 
+* with other functions such as viewing the contents of each folder, deleting emails, and clearing the trash folder.
+* Each <code>Mailbox</code> object comes with a predefined inbox folder, trash folder and a list user created folders,
+* including the inbox and trash folders.
+* @author
+*   Jamieson Barkume    ID#: 113389269      Recitation: R30
+*/
 public class Mailbox implements Serializable {
 
     private Folder inbox;
@@ -172,6 +180,13 @@ public class Mailbox implements Serializable {
         System.out.println("R >> Return to Main Menu\n");
     }
 
+    /**
+    * Handles what to do when the user selects to view either
+    * the inbox, the trash, or any other folder. Will stay in the folder
+    * submenu until the user selects "R". 
+    *@param folder
+    * The folder being viewed.
+    */
     public void viewFolder(Folder folder) {
         Scanner input = new Scanner(System.in);
         Email email;
@@ -187,7 +202,7 @@ public class Mailbox implements Serializable {
                 System.out.println("\n" + folder.getName() + " is empty.");
                 answer = "R";
             }
-            else {
+            else { // Print contents of folder and get users option.
                 System.out.println("\n" + folder);
                 printFolderSubmenu();
                 System.out.print("\nEnter Option: ");
@@ -196,7 +211,7 @@ public class Mailbox implements Serializable {
 
             // submenu switch case.
             switch (answer) {
-                case "M":
+                case "M": // Move email.
                     System.out.print("\nEnter Index of Email: ");
                     email = folder.removeEmail(input.nextInt()-1);
                     input.nextLine();
@@ -209,14 +224,14 @@ public class Mailbox implements Serializable {
                     moveEmail(email, target);
                     System.out.println("\n\"" + email.getSubject() + "\" moved to \"" + target.getName() + "\"");
                     break;
-                case "D":
+                case "D": // Delete email.
                     System.out.print("\nEnter Index of Email: ");
                     email = folder.removeEmail(input.nextInt()-1);
                     input.nextLine();
                     moveEmail(email, trash);
                     System.out.println("\n\"" + email.getSubject() + "\" moved to trash");
                     break;
-                case "V":
+                case "V": // View contents of certain email.
                     System.out.print("\nEnter Index of Email: ");
                     System.out.println(folder.getEmails().get(input.nextInt()-1));
                     input.nextLine();
@@ -242,8 +257,12 @@ public class Mailbox implements Serializable {
         }
     }
 
+    // Main method.
     public static void main(String[] args) {
         Mailbox mainMailbox;
+        
+        // read in the object from the "mailbox.obj" file if it exists,
+        // and assign its value to the mainMailbox object.
         try {
             FileInputStream   file = new FileInputStream("mailbox.obj");
             ObjectInputStream fin  = new ObjectInputStream(file);
@@ -265,35 +284,35 @@ public class Mailbox implements Serializable {
             System.out.print("Enter Option: ");
             answer = input.nextLine().trim().toUpperCase();
             switch(answer) {
-                case "A":
+                case "A": // Add folder.
                    System.out.print("\nEnter Folder Name: ");
                    String name = input.nextLine();
                    folder = new Folder(name);
                    mainMailbox.addFolder(folder);
                    break;
-                case "R":
+                case "R": // Remove folder.
                     System.out.print("\nEnter Folder Name: ");
                     name = input.nextLine();
                     mainMailbox.deleteFolder(name);
                     break;
-                case "C":
+                case "C": // Create email.
                     mainMailbox.composeEmail();
                     break;
-                case "F":
+                case "F": // View folder.
                     System.out.print("\nEnter Folder Name: ");
                     name = input.nextLine();
                     folder = mainMailbox.getFolder(name);
                     mainMailbox.viewFolder(folder);
                     break;
 
-                // back outside the submenu.
+                // View inbox.
                 case "I":
                     mainMailbox.viewFolder(mainMailbox.inbox);
                     break;
-                case "T":
+                case "T": // View trash.
                     mainMailbox.viewFolder(mainMailbox.trash);
                     break;
-                case "E":
+                case "E": // Clear Trash
                     mainMailbox.clearTrash();
                     break;
                 default:
@@ -304,7 +323,7 @@ public class Mailbox implements Serializable {
 
 
 
-
+        // Write the mainMailbox object to the "mailbox.obj" file.
         try {
             FileOutputStream file = new FileOutputStream("mailbox.obj");
             ObjectOutputStream fout = new ObjectOutputStream(file);
